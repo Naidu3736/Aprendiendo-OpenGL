@@ -3,7 +3,7 @@
 #include <iostream>
 
 const int WIDTH = 800;
-const int HEINGT = 600;
+const int HEINGTH = 600;
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
@@ -18,10 +18,10 @@ void processInput(GLFWwindow* window) {
 int main() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEINGT, "Hello World", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEINGTH, "Hello World", NULL, NULL);
     if (window == NULL) {
         std::cout << "Error al incializar la ventana." << std::endl;
         glfwTerminate();

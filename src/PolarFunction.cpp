@@ -112,7 +112,7 @@ std::vector<Vertex> vertexs;
  * - Pasar el color al fragment shader
  */
 const char* vertexShaderSource = R"(
-    #version 430 core
+    #version 460 core
 
     layout (location = 0) in vec3 aPos;  // Atributo de posición
     layout (location = 1) in vec3 aColor; // Atributo de color
@@ -133,7 +133,7 @@ const char* vertexShaderSource = R"(
  * - Asignar el color final al fragmento
  */
 const char* fragmentShaderSource = R"(
-    #version 430 core
+    #version 460 core
 
     in vec3 Color;                       // Color interpolado del vertex shader
     out vec4 outColor;                   // Color final de salida
@@ -235,7 +235,7 @@ void generationPolarFucntion() {
 bool windowInit() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Función Polar", NULL, NULL);
