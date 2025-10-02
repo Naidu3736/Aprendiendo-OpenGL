@@ -4,7 +4,7 @@
  * 
  * Este programa genera y renderiza una función polar definida por:
  * r = e^sin(θ) - 2cos(4θ)
- * utilizando OpenGL 4.3 con GLFW para la gestión de ventanas.
+ * utilizando OpenGL 4.6 con GLFW para la gestión de ventanas.
  * 
  * @author [Francisco Aparicio Martínez]
  * @version 1.0
