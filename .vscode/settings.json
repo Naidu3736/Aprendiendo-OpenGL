@@ -4,7 +4,7 @@
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
         "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "zig": "zig run",
-        "cpp": "g++ -g $workspaceRoot/src/$fileName $workspaceRoot/src/glad.c -I$workspaceRoot/include -L$workspaceRoot/lib -lglfw3 -lopengl32 -lgdi32 -luser32 -o $workspaceRoot/build/$fileNameWithoutExt && $workspaceRoot/build/$fileNameWithoutExt",
+        "cpp": "g++ $workspaceRoot/src/$fileName $workspaceRoot/src/glad.c -I$workspaceRoot/include -L$workspaceRoot/lib -lglfw3 -lopengl32 -lgdi32 -luser32 -o $workspaceRoot/build/$fileNameWithoutExt && $workspaceRoot/build/$fileNameWithoutExt",
         "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",
         "php": "php",
         "python": "python -u",
@@ -119,6 +119,8 @@
         "xmemory": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "fstream": "cpp",
+        "sstream": "cpp"
     },
 }

@@ -9,15 +9,16 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "${workspaceFolder}\\src\\glad.c",
+                "${workspaceFolder}\\src\\core\\glad.c",
                 "-I${workspaceFolder}\\include",
                 "-L${workspaceFolder}\\lib",
                 "-lglfw3",
+                "-lutils",
                 "-lopengl32",
                 "-lgdi32",
                 "-luser32",
                 "-o",
-                "${workspaceFolder}\\build\\${fileBasenameNoExtension}"
+                "${workspaceFolder}\\build\\${fileBasenameNoExtension}.exe"
             ],
             "group": {
                 "kind": "build",
@@ -27,7 +28,7 @@
                 "$gcc"
             ],
             "options": {
-                "cwd": "${fileDirname}"
+                "cwd": "${workspaceFolder}"
             },
             "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe"
         },
@@ -39,24 +40,25 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "${workspaceFolder}\\src\\glad.c",
+                "${workspaceFolder}\\src\\core\\glad.c",
                 "-I${workspaceFolder}\\include",
                 "-L${workspaceFolder}\\lib",
                 "-lglfw3",
+                "-lutils",
                 "-lopengl32",
                 "-lgdi32",
                 "-luser32",
                 "-o",
                 "${workspaceFolder}\\build\\${fileBasenameNoExtension}",
                 "&&",
-                "${workspaceFolder}/build/${fileBasenameNoExtension}"
+                "${workspaceFolder}\\build\\${fileBasenameNoExtension}"
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "options": {
-                "cwd": "${fileDirname}",
+                "cwd": "${workspaceFolder}",
             },
             "problemMatcher": ["$gcc"]
         }
