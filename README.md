@@ -2,18 +2,44 @@
 ```
 opengl
 ├─ assets
+│  ├─ fonts
 │  ├─ models
 │  ├─ shaders
 │  │  ├─ basics
-│  │  └─ polar
+│  │  ├─ MovingTriangle
+│  │  │  ├─ FragmentShader.frag
+│  │  │  └─ VertexShader.vert
+│  │  ├─ polar
+│  │  │  ├─ FragmentShader.frag
+│  │  │  └─ VertexShader.vert
+│  │  ├─ TexturedTriangle
+│  │  │  ├─ FragmentShader.frag
+│  │  │  └─ VertexShader.vert
+│  │  └─ UpsideTriangle
 │  │     ├─ FragmentShader.frag
 │  │     └─ VertexShader.vert
+│  ├─ sounds
 │  └─ textures
+│     ├─ coca.png
+│     └─ ellen_joe.png
 ├─ build
-│  ├─ hola.exe
+│  ├─ MovingTriangle.exe
 │  ├─ PolarFunction.exe
-│  └─ shader.o
+│  ├─ PolarFunctionShader.exe
+│  ├─ shader.o
+│  ├─ stb_image_impl.o
+│  ├─ Texture.exe
+│  ├─ texture.o
+│  └─ UpsideTriangle.exe
 ├─ include
+│  ├─ engine
+│  │  ├─ core
+│  │  │  └─ vertex.hpp
+│  │  ├─ engine.hpp
+│  │  └─ graphics
+│  │     ├─ mesh.hpp
+│  │     ├─ shader.hpp
+│  │     └─ texture.hpp
 │  ├─ glad
 │  │  └─ glad.h
 │  ├─ GLFW
@@ -517,11 +543,10 @@ opengl
 │  │  └─ vector_relational.hpp
 │  ├─ KHR
 │  │  └─ khrplatform.h
-│  └─ utils
-│     └─ shader.hpp
+│  └─ stb_image.h
 ├─ lib
-│  ├─ libglfw3.a
-│  └─ libutils.a
+│  ├─ libengine.a
+│  └─ libglfw3.a
 ├─ README.md
 ├─ scripts
 │  └─ Build_UtilsLibrary.ps1
@@ -531,10 +556,14 @@ opengl
    ├─ main
    │  ├─ HelloTriangle.cpp
    │  ├─ HelloWorld.cpp
-   │  ├─ PolarFunction
-   │  │  └─ hola.cpp
-   │  └─ PolarFunction.cpp
+   │  ├─ MovingTriangle.cpp
+   │  ├─ PolarFunction.cpp
+   │  ├─ PolarFunctionShader.cpp
+   │  ├─ Texture.cpp
+   │  └─ UpsideTriangle.cpp
    └─ utils
-      └─ shader.cpp
+      ├─ shader.cpp
+      ├─ stb_image_impl.cpp
+      └─ texture.cpp
 
 ```

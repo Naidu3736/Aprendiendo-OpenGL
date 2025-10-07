@@ -1,5 +1,4 @@
-#include <utils/shader.hpp>
-#include <filesystem>
+#include <engine/graphics/shader.hpp>
 
 namespace {
     std::string loadShaderFromFile(const char* shaderPath) {
@@ -35,7 +34,7 @@ namespace {
         glGetShaderiv(shader, GL_COMPILE_STATUS, &sucess);
         if (!sucess) {
             glGetShaderInfoLog(shader, 512, NULL, infolog);
-            std::cerr << "ERROR::SHADER::" << typeName << "COMPILATION_FAILED\n" << infolog << std::endl;
+            std::cerr << "ERROR::SHADER::" << typeName << "_COMPILATION_FAILED\n" << infolog << std::endl;
             glDeleteShader(shader);
             
             return 0;
@@ -72,7 +71,7 @@ namespace {
     }
 }
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath) {
+engine::graphics::Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     std::string vertexCode = loadShaderFromFile(vertexPath);
     std::string fragmentCode = loadShaderFromFile(fragmentPath);
 
@@ -86,12 +85,12 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     glDeleteShader(fragmentShader);
 }
 
-Shader::~Shader() {
+engine::graphics::Shader::~Shader() {
     if (ID != 0) {
         glDeleteProgram(ID);
     }
 }
 
-void Shader::use() const {
+void engine::graphics::Shader::use() const {
     glUseProgram(ID);
 }

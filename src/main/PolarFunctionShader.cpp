@@ -1,7 +1,8 @@
 /**
  * @file PolarFunction.cpp
- * @brief Programa para visualizar una función polar usando OpenGL
- * 
+ * @brief Programa de prueba para clase librería Shader utilizando a  
+ *        PolarFunction como prueba
+ *  
  * Este programa genera y renderiza una función polar definida por:
  * r = e^sin(θ) - 2cos(4θ)
  * utilizando OpenGL 4.6 con GLFW para la gestión de ventanas.
@@ -14,7 +15,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
-#include <utils/shader.hpp>
+#include <engine/engine.hpp>
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -75,18 +76,6 @@ float delta = (float)(360 * period) / resolutionGraph;
 // ============================================================================
 
 /**
- * @struct Vertex
- * @brief Estructura que representa un vértice con posición y color
- * 
- * Esta estructura se utiliza para almacenar los datos de cada vértice
- * que será enviado a la GPU para su renderizado.
- */
-struct Vertex {
-    glm::vec2 position;  /**< Coordenadas 2D de la posición (x, y) */
-    glm::vec3 color;     /**< Color RGB del vértice */
-};
-
-/**
  * @var axes
  * @brief Vector que contiene los vértices para dibujar los ejes coordenados
  * 
@@ -94,16 +83,16 @@ struct Vertex {
  * - Eje X: línea verde horizontal
  * - Eje Y: línea roja vertical
  */
-std::vector<Vertex> axes = {
-    {glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)},  // Eje X - extremo derecho
-    {glm::vec2(-1.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)}, // Eje X - extremo izquierdo
+std::vector<engine::core::Vertex> axes = {
+    {glm::vec3(1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)},  // Eje X - extremo derecho
+    {glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 1.0f)}, // Eje X - extremo izquierdo
 
-    {glm::vec2(0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f)},  // Eje Y - extremo superior
-    {glm::vec2(0.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f)}  // Eje Y - extremo inferior
+    {glm::vec3(0.0f, 1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)},  // Eje Y - extremo superior
+    {glm::vec3(0.0f, -1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)}  // Eje Y - extremo inferior
 };
 
 /** Vector que almacena los vértices de la función polar a graficar */
-std::vector<Vertex> vertexs;
+std::vector<engine::core::Vertex> vertexs;
 
 // ============================================================================
 // FUNCIONES DE CALLBACK Y UTILITARIAS
@@ -149,15 +138,15 @@ void keyCallback(GLFWwindow* window) {
  * @param angle Ángulo en radianes
  * @return glm::vec2 Coordenadas cartesianas (x, y)
  */
-glm::vec2 toCartesian(float r, float angle) {
+glm::vec3 toCartesian(float r, float angle) {
     float x = r * std::cos(angle);
     float y = r * std::sin(angle);
 
-    return glm::vec2(x, y);
+    return glm::vec3(x, y, 0.0f);
 }
 
 /**
- * @brief Genera los puntos de la función polar
+ * @brief Genera los puntos de la función polars
  * 
  * Calcula y almacena los vértices para la función polar definida por:
  * r(θ) = e^sin(θ) - 2cos(4θ)
@@ -175,9 +164,9 @@ void generationPolarFucntion() {
         float r = std::pow(glm::e<float>(), std::sin(radian)) - 2 * std::cos(4 * radian);
         r *= scale;  // Aplicar factor de escala
 
-        Vertex vertex;
+        engine::core::Vertex vertex;
         vertex.position = toCartesian(r, radian);  // Convertir a cartesianas
-        vertex.color = glm::vec3(1.0f, 0.0f, 1.0f);  // Color magenta
+        vertex.color = glm::vec4(1.0f, 0.0f, 1.0f, 1.0f);  // Color magenta
 
         vertexs.push_back(vertex);
     }
@@ -247,14 +236,23 @@ void setupAxes() {
     glBindVertexArray(axesVAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, axesVBO);
-    glBufferData(GL_ARRAY_BUFFER, axes.size() * sizeof(Vertex), axes.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 
+                 axes.size() * sizeof(engine::core::Vertex),
+                 axes.data(), 
+                 GL_STATIC_DRAW);
 
-    // Atributo 0: Posición (vec2)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+    // Atributo 0: Posición (vec3)
+    glVertexAttribPointer(0, 3,
+                          GL_FLOAT, GL_FALSE, 
+                          sizeof(engine::core::Vertex), 
+                          (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Atributo 1: Color (vec3) - offset = sizeof(glm::vec2) = 8 bytes
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+    // Atributo 1: Color (vec4) - offset = sizeof(glm::vec2) = 8 bytes
+    glVertexAttribPointer(1, 4, 
+                          GL_FLOAT, GL_FALSE, 
+                          sizeof(engine::core::Vertex), 
+                          (void*)offsetof(engine::core::Vertex, color));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
@@ -273,14 +271,23 @@ void setupGraph() {
     glBindVertexArray(polarVAO);
     
     glBindBuffer(GL_ARRAY_BUFFER, polarVBO);
-    glBufferData(GL_ARRAY_BUFFER, vertexs.size() * sizeof(Vertex), vertexs.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 
+                 vertexs.size() * sizeof(engine::core::Vertex),
+                vertexs.data(), 
+                GL_STATIC_DRAW);
 
-    // Atributo 0: Posición (vec2)
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+    // Atributo 0: Posición (vec3)
+    glVertexAttribPointer(0, 3,
+                          GL_FLOAT, GL_FALSE, 
+                          sizeof(engine::core::Vertex), 
+                          (void*)0);
     glEnableVertexAttribArray(0);
 
-    // Atributo 1: Color (vec3) - offset = sizeof(glm::vec2) = 8 bytes
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+    // Atributo 1: Color (vec4) - offset = sizeof(glm::vec2) = 8 bytes
+    glVertexAttribPointer(1, 4, 
+                          GL_FLOAT, GL_FALSE, 
+                          sizeof(engine::core::Vertex), 
+                          (void*)offsetof(engine::core::Vertex, color));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
@@ -297,10 +304,10 @@ void setupGraph() {
  * 
  * @param shaderProgram Programa de shaders a utilizar para el renderizado
  */
-void drawAxes(Shader& shader) {
+void drawAxes(engine::graphics::Shader& shader) {
         shader.use();
         glBindVertexArray(axesVAO);
-        glDrawArrays(GL_LINES, 0, axes.size());  // Dibujar 2 líneas (4 vértices)
+        glDrawArrays((GLenum)engine::core::PrimitiveType::Line, 0, axes.size());  // Dibujar 2 líneas (4 vértices)
         glBindVertexArray(0);                                   
 }
 
@@ -312,7 +319,7 @@ void drawAxes(Shader& shader) {
  * 
  * @param shaderProgram Programa de shaders a utilizar para el renderizado
  */
-void drawGraph(Shader &shader) {
+void drawGraph(engine::graphics::Shader &shader) {
     shader.use();
     glBindVertexArray(polarVAO);
     glDrawArrays(GL_LINE_LOOP, 0, vertexs.size());  // Línea continua cerrada
@@ -349,7 +356,7 @@ int main() {
     generationPolarFucntion();
 
     // 4. Creación de Shader
-    Shader shader(vertexPath, fragmentPath);
+    engine::graphics::Shader shader(vertexPath, fragmentPath);
     // 5. Configuración de buffers OpenGL
     setupAxes();
     setupGraph();
