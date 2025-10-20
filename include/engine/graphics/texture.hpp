@@ -7,7 +7,7 @@
  * y parámetros de filtrado y wrapping.
  * 
  * @author [Francisco Aparicio Martínez]
- * @version 1.0
+ * @version 1.1
  */
 
 #ifndef TEXTURE_HPP
@@ -108,6 +108,8 @@ namespace engine {
             int height;
             /** @brief Número de canales de color (RGB=3, RGBA=4) */
             int channels;
+            /** @brief Ruta de la textura */
+            std::string path;
 
         public:
             /**
@@ -138,14 +140,6 @@ namespace engine {
              * @endcode
              */
             Texture(const char* path, const TextureParams& params = TextureParams());
-            
-            /**
-             * @brief Destructor - libera los recursos de la textura
-             * 
-             * Elimina la textura de la GPU si existe.
-             * Es llamado automáticamente cuando el objeto Texture sale del scope.
-             */
-            ~Texture();
 
             /**
              * @brief Constructor de copia eliminado
@@ -154,6 +148,15 @@ namespace engine {
              * con la gestión de recursos de OpenGL.
              */
             Texture(const Texture&) = delete;
+            Texture& operator=(const Texture&) = delete;
+            
+            /**
+             * @brief Destructor - libera los recursos de la textura
+             * 
+             * Elimina la textura de la GPU si existe.
+             * Es llamado automáticamente cuando el objeto Texture sale del scope.
+             */
+            ~Texture();
 
             /**
              * @brief Activa la textura para su uso en renderizado
@@ -193,6 +196,13 @@ namespace engine {
              * @return int Número de canales (3 para RGB, 4 para RGBA)
              */
             inline int getChannels() const { return channels; }
+
+            /**
+             * @brief Obtiene la ruta de la textura
+             * 
+             * @return std::string ruta de la textura
+             */
+            inline std::string getPath() const { return path; }
         };
     }
 }
