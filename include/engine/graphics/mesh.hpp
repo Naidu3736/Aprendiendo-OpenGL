@@ -1,32 +1,23 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP    
+#ifndef MEHS_HPP
+#define MESH_HPP
 
 #pragma once
 
 #include <glad/glad.h>
-#include <vector>
-#include <glm/glm.hpp>
+#include "./shader.hpp"
 
 namespace engine {
     namespace graphics {
-        class Geometry {
+        class Mesh {
             private:
-            struct Vertex{
-                glm::vec3 position;
-                glm::vec4 color;
-            };
-            
-
-            GLuint VAO, VBO, EBO;
-            std::vector<Vertex> vertexs;
-            std::vector<GLuint> ìndexs;
-            GLenum drawMode;
+            GLuint VAO;
+            GLuint VBO;
+            GLuint EBO;
 
             public:
-            Geometry(const std::vector<Vertex>& vertexs,
-                    const std::vector<GLuint>& indexs) {}
+            Mesh();
         };
     }
 }
 
-#endif // GEOMETRY_HPP  
+#endif // MESH_HPP

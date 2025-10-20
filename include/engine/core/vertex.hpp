@@ -25,6 +25,15 @@ namespace engine {
                 glm::vec2 tex = glm::vec2(0.0f))
                 : position(pos), color(col), texCoords(tex) {}
         };
+
+        struct VertexTex {
+            glm::vec3 position;
+            glm::vec2 texCoord;
+
+            VertexTex(glm::vec3 pos = glm::vec3(0.0f),
+                      glm::vec2 tex = glm::vec2(0.0f))
+                      : position(pos), texCoord(tex) {}
+        };
     }
 }
 #endif // VERTEX_HPP    

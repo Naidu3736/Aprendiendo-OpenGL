@@ -10,21 +10,27 @@ struct Config {
     // ========== CONFIGURACIÓN (valores que rara vez cambian) ========== 
     const int SCREEN_WIDTH = 800;
     const int SCREEN_HEINGHT = 800;
-    const char* WINDOW_TITLE = "Moving Triangle";
-    const char* VERTEX_PATH = "assets/shaders/TexturedTriangle/VertexShader.vert";
-    const char* FRAGMENT_PATH = "assets/shaders/TexturedTriangle/FragmentShader.frag";
-    const char* TEXTURE1_PATH = "assets/textures/ellen_joe.png";
-    const char* TEXTURE2_PATH = "assets/textures/coca.png";
+    const char* WINDOW_TITLE = "Texture";
+    const char* VERTEX_PATH = "../assets/shaders/Texture/VertexShader.vert";
+    const char* FRAGMENT_PATH = "../assets/shaders/Texture/FragmentShader.frag";
+    const char* TEXTURE1_PATH = "../assets/textures/ellen_joe.png";
+    const char* TEXTURE2_PATH = "../assets/textures/coca.png";
 
     // ========== ESTADO RUNTIME (valores que cambian frecuentemente) ==========
     GLFWwindow* window = nullptr;
-    GLuint VAO, VBO;
+    GLuint VAO, VBO, EBO;
 
     std::vector<engine::core::Vertex> triangle = {
         // Triángulo 1
-        {{0.5f,  -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
-        {{ 0.0f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.5f, 1.0f}},
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}}
+        {{-0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 0.0f}},
+        {{ 0.5f, -0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 0.0f}},
+        {{ 0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {1.0f, 1.0f}},
+        {{-0.5f,  0.5f, 0.0f}, {1.0f, 1.0f, 1.0f, 1.0f}, {0.0f, 1.0f }}
+    };
+
+    std::vector<GLuint> indexs = {
+        0, 1, 3,
+        1, 2, 3 
     };
 
     float mix = 0.0f;
@@ -124,14 +130,21 @@ bool gladInit() {
 void setupTriangle(Config& config) {
     glGenVertexArrays(1, &config.VAO);
     glGenBuffers(1, &config.VBO);
+    glGenBuffers(1, &config.EBO);
 
     glBindVertexArray(config.VAO);
-
+    
     glBindBuffer(GL_ARRAY_BUFFER, config.VBO);
     glBufferData(GL_ARRAY_BUFFER, 
                  config.triangle.size() * sizeof(engine::core::Vertex),
                  config.triangle.data(), 
                  GL_DYNAMIC_DRAW);
+        
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, config.EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                    config.indexs.size() * sizeof(GLuint),
+                    config.indexs.data(),
+                    GL_STATIC_DRAW);
 
     glVertexAttribPointer(0,
                           3, 
@@ -156,7 +169,7 @@ void setupTriangle(Config& config) {
                           sizeof(engine::core::Vertex),
                           (void*)offsetof(engine::core::Vertex, texCoords));
     glEnableVertexAttribArray(2);
-
+    
     glBindVertexArray(0);
 }
 
@@ -171,10 +184,9 @@ void drawTriangle(Config& config, engine::graphics::Shader& shader, engine::grap
     shader.use();
     texture1.bind(GL_TEXTURE0);
     texture2.bind(GL_TEXTURE1);
-    shader.setUniform("texture1", 0);
-    shader.setUniform("texture2", 1);
     glBindVertexArray(config.VAO);
-    glDrawArrays(GL_TRIANGLES, 0, config.triangle.size());
+    // glDrawArrays(GL_TRIANGLES, 0, config.triangle.size());
+    glDrawElements(GL_TRIANGLES, config.indexs.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
 
@@ -192,16 +204,22 @@ void mixing(Config &config, engine::graphics::Shader& shader) {
     if (up && down) {
         return;
     } 
-    else if (up && config.mix < 1.0f) {
-        config.mix += 0.01f;
+    else if (up) {
+        if (config.mix < 0.99f) {  // Margen de tolerancia
+            config.mix += 0.01f;
+        } else {
+            config.mix = 1.0f;  // Forzar el valor exacto
+        }
         shader.setUniform("uMix", config.mix);
     }
-    if (down && config.mix > 0.0f) {
-        config.mix -= 0.01f;
+    else if (down) {
+        if (config.mix > 0.01f) {  // Margen de tolerancia
+            config.mix -= 0.01f;
+        } else {
+            config.mix = 0.0f;  // Forzar el valor exacto
+        }
         shader.setUniform("uMix", config.mix);
     }
-
-    std::cout << config.mix << std::endl;
 }
 
 int main() {
@@ -212,11 +230,14 @@ int main() {
     if (!gladInit()) return -1;
 
     engine::graphics::Shader shader(config.VERTEX_PATH, config.FRAGMENT_PATH);
-
     engine::graphics::Texture texture1(config.TEXTURE1_PATH);
     engine::graphics::Texture texture2(config.TEXTURE2_PATH);
-
+    
     setupTriangle(config);
+
+    shader.use();
+    shader.setUniform("texture1", 0);
+    shader.setUniform("texture2", 1);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -236,6 +257,7 @@ int main() {
 
     glDeleteVertexArrays(1, &config.VAO);
     glDeleteBuffers(1, &config.VBO);
+    glDeleteBuffers(1, &config.EBO);
 
     glfwTerminate();
 

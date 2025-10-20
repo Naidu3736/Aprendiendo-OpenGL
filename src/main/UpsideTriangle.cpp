@@ -11,8 +11,8 @@ struct Config {
     const int SCREEN_WIDTH = 800;
     const int SCREEN_HEINGHT = 800;
     const char* WINDOW_TITLE = "Reverse Triangle";
-    const char* VERTEX_PATH = "assets/shaders/UpsideTriangle/VertexShader.vert";
-    const char* FRAGMENT_PATH = "assets/shaders/UpsideTriangle/FragmentShader.frag";
+    const char* VERTEX_PATH = "../assets/shaders/UpsideTriangle/VertexShader.vert";
+    const char* FRAGMENT_PATH = "../assets/shaders/UpsideTriangle/FragmentShader.frag";
 
     // ========== ESTADO RUNTIME (valores que cambian frecuentemente) ==========
     GLFWwindow* window = nullptr;

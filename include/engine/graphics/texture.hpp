@@ -107,14 +107,15 @@ namespace engine {
             /** @brief Alto de la textura en píxeles */
             int height;
             /** @brief Número de canales de color (RGB=3, RGBA=4) */
-            int nrChannels;
+            int channels;
 
         public:
             /**
              * @brief Constructor que carga y configura una textura desde archivo
              * 
-             * Crea una textura cargando una imagen desde la ruta especificada
-             * y configura sus parámetros de wrapping y filtrado usando la estructura TextureParams.
+             * Crea una textura cargando una imagen (PNG, JPG, TGA, etc) desde la ruta especificada
+             * utilizando la librería de stb_image, además de configura sus parámetros de wrapping 
+             * y filtrado usando la estructura TextureParams.
              * 
              * @param path Ruta al archivo de la textura
              * @param params Estructura con los parámetros de configuración de la textura
@@ -161,12 +162,6 @@ namespace engine {
              * de textura especificada para todas las operaciones de renderizado subsiguientes.
              * 
              * @param textureUnit Unidad de textura a utilizar (por defecto: GL_TEXTURE0)
-             * 
-             * @example
-             * @code
-             * texture.bind(GL_TEXTURE0);
-             * // La textura estará disponible en el shader como texture0
-             * @endcode
              */
             void bind(GLenum textureUnit = GL_TEXTURE0) const;
             
@@ -174,16 +169,30 @@ namespace engine {
              * @brief Obtiene el identificador de la textura en OpenGL
              * 
              * @return GLuint Identificador único de la textura
-             * 
-             * @note Útil para operaciones avanzadas que requieran acceso directo al ID
-             * 
-             * @example
-             * @code
-             * GLuint texID = texture.getID();
-             * glBindTexture(GL_TEXTURE_2D, texID);
-             * @endcode
              */
-            GLuint getID() { return ID; }
+            inline GLuint getID() const { return ID; }
+
+            /**
+             * @brief Obtiene el ancho de la textura en píxeles
+             * 
+             * @return int Ancho de la textura en píxeles
+             */
+            inline int getWidth() const { return width; }
+
+            /**
+             * @brief Obtiene el alto de la textura en píxeles
+             * 
+             * @return int Alto de la textura en píxeles
+
+             */
+            inline int getHeight() const { return height; }
+
+            /**
+             * @brief Obtiene el número de canales de color de la textura
+             * 
+             * @return int Número de canales (3 para RGB, 4 para RGBA)
+             */
+            inline int getChannels() const { return channels; }
         };
     }
 }
