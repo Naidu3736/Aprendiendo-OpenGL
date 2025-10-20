@@ -5,7 +5,7 @@ namespace {
         std::string shaderCode;
         std::ifstream shaderFile;
 
-        shaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+        shaderFile.exceptions   (std::ifstream::failbit | std::ifstream::badbit);
 
         try {
             shaderFile.open(shaderPath);
@@ -62,10 +62,6 @@ namespace {
             glDeleteProgram(program);
             return 0;
         }
-
-        glDeleteShader(vertexShader);
-        glDeleteShader(fragmentShader);
-
 
         return program;
     }
