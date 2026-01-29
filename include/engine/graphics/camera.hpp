@@ -19,6 +19,7 @@ namespace engine::graphics {
         float m_pitch;
         float m_movementSpeed;
         float m_mouseSensitivity;
+        float m_zoomSensitivity;
         float m_fov;
         float m_minFov;
         float m_maxFov;
@@ -33,11 +34,12 @@ namespace engine::graphics {
                 float pitch = 0.0f,
                 const glm::vec3& up = {0,1,0},
                 float movementSpeed = 2.5f,
-                float mouseSensitivity = 35.0f,
+                float mouseSensitivity = 0.05f,
+                float zoomSensitivity = 0.5f,
                 float fov = 45.0f,
                 float minFov = 1.0f,
                 float maxFov = 120.0f,
-                float zNear = 0.1f,
+                float zNear = 0.0001f,
                 float zFar = 100.0f);
 
         glm::mat4 getViewMatrix() const;
@@ -58,6 +60,7 @@ namespace engine::graphics {
         float pitch() const;
         float movementSpeed() const;
         float mouseSensitivity() const;
+        float zoomSensitivity() const;
         float fov() const;
         float minFov() const;
         float maxFov() const;
@@ -65,13 +68,14 @@ namespace engine::graphics {
         float zFar() const;
 
         void setMovementSpeed(float movementSpeed);
-        void setMouseSensitivity(float mouseSensitivity);
+        void setMouseSensitivity(float sensitivity);
+        void setZoomSensitivity(float sensitivity);
         void setFov(float fov);
         void setFovLimits(float minFov, float maxFov);
         void setZNear(float zNear);
         void setZFar(float zFar);
 
-        void reset() const;
+        void reset();
     };
 }
 

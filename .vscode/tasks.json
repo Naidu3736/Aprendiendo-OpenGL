@@ -2,73 +2,116 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "OpenGL: g++.exe build active file",
+            "label": "OpenGL: Compile Fast",
             "type": "cppbuild",
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
+                "-O0",
+                "-march=native",
+                "-pipe",
                 "-fdiagnostics-color=always",
                 "-g",
+                "-std=c++20",
                 "${file}",
-                "${workspaceFolder}\\src\\core\\glad.c",
-                "-I${workspaceFolder}\\include",
-                "-L${workspaceFolder}\\lib",
+                "${workspaceFolder}/src/core/glad.c",
+                "-I${workspaceFolder}/include",
+                "-L${workspaceFolder}/lib",
                 "-lglfw3",
                 "-lengine",
                 "-lopengl32",
                 "-lgdi32",
                 "-luser32",
                 "-o",
-                "${workspaceFolder}\\build\\${fileBasenameNoExtension}.exe"
+                "${workspaceFolder}/build/bin/${fileBasenameNoExtension}.exe"
             ],
             "group": {
                 "kind": "build",
-                "isDefault": true
             },
-            "problemMatcher": [
-                "$gcc"
-            ],
+            "problemMatcher": ["$gcc"],
             "options": {
                 "cwd": "${workspaceFolder}"
-            },
-            "detail": "compiler: C:\\msys64\\ucrt64\\bin\\g++.exe",
-            "presentation": {
-                "echo": true,
-                "reveal": "always",
-                "focus": false,
-                "panel": "shared",
-                "showReuseMessage": true,
-                "clear": false
             }
         },
         {
+            "label": "OpenGL: Compile Release",
             "type": "cppbuild",
-            "label": "Build and Run OpenGL",
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
+                "-O3",
+                "-march=native",
+                "-flto",
+                "-DNDEBUG",
                 "-fdiagnostics-color=always",
-                "-g",
+                "-std=c++20",
                 "${file}",
-                "${workspaceFolder}\\src\\core\\glad.c",
-                "-I${workspaceFolder}\\include",
-                "-L${workspaceFolder}\\lib",
+                "${workspaceFolder}/src/core/glad.c",
+                "-I${workspaceFolder}/include",
+                "-L${workspaceFolder}/lib",
                 "-lglfw3",
                 "-lengine",
                 "-lopengl32",
                 "-lgdi32",
                 "-luser32",
                 "-o",
-                "${workspaceFolder}\\build\\${fileBasenameNoExtension}",
-                "&&",
-                "${workspaceFolder}\\build\\${fileBasenameNoExtension}"
+                "${workspaceFolder}/build/bin/${fileBasenameNoExtension}_release.exe"
             ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "OpenGL: Compile object file",
+            "type": "cppbuild",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-O3",
+                "-march=native",
+                "-DNDEBUG",
+                "-fdiagnostics-color=always",
+                "-std=c++20",
+                "-c",
+                "${file}",
+                "-I${workspaceFolder}/include",
+                "-o",
+                "${workspaceFolder}/build/lib/${fileBasenameNoExtension}.o"
+            ],
+            "group": "build",
+            "problemMatcher": ["$gcc"],
+            "detail": "Compilar archivo objeto para librería",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "label": "OpenGL: Create static library",
+            "type": "shell",
+            "command": "Get-ChildItem",
+            "args": [
+                "-Path",
+                "${workspaceFolder}/build/lib/*.o",
+                "|",
+                "ForEach-Object",
+                "{",
+                "&",
+                "'C:\\msys64\\ucrt64\\bin\\ar.exe'",
+                "rcs",
+                "'${workspaceFolder}/lib/libengine.a'",
+                "$_.FullName",
+                "}"
+            ],
+            "group": "build",
+            "problemMatcher": [],
+            "detail": "Crear librería estática desde objetos",
             "options": {
                 "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+                    "args": ["-Command"]
+                }
             },
-            "problemMatcher": ["$gcc"]
+            "dependsOn": ["OpenGL: Compile object file"]
         }
     ]
 }

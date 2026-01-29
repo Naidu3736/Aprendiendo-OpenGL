@@ -13,7 +13,7 @@ double Mouse::m_scrollX = 0.0;
 double Mouse::m_scrollY = 0.0;
 double Mouse::m_scrollDeltaX = 0.0;
 double Mouse::m_scrollDeltaY = 0.0;
-double Mouse::m_scrollSpeed = 2.0;
+double Mouse::m_scrollSpeed = 0.1;
 bool Mouse::m_firstMove = true;
 
 void Mouse::init(int width, int height)
@@ -42,8 +42,8 @@ void Mouse::cursorPositionCallback(GLFWwindow* window, double xPos, double yPos)
 
 void Mouse::scrollCallback(GLFWwindow* window, double xOffset, double yOffset)
 {
-    m_scrollDeltaX = xOffset * m_scrollSpeed;
-    m_scrollDeltaY = yOffset * m_scrollSpeed;
+    m_scrollDeltaX = xOffset;
+    m_scrollDeltaY = yOffset;
     m_scrollX += xOffset;
     m_scrollY += yOffset;
 }
@@ -98,6 +98,6 @@ void Mouse::reset(int width, int height)
     m_scrollY = 0.0;
     m_scrollDeltaX = 0.0;
     m_scrollDeltaY = 0.0;
-    m_scrollSpeed = 2.0;
+    m_scrollSpeed = 0.1;
     m_firstMove = true;
 }

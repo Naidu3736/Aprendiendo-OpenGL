@@ -4,9 +4,10 @@
 
 using namespace engine::graphics;
 
-Texture::Texture(const char* path, const TextureParams& params) : path(path) {
-    glGenTextures(1, &ID);
-    glBindTexture(GL_TEXTURE_2D, ID);
+Texture::Texture(const char* path, const TextureParams& params) : m_path(path) 
+{
+    glGenTextures(1, &m_ID);
+    glBindTexture(GL_TEXTURE_2D, m_ID);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, params.wrapS);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, params.wrapT);
@@ -14,12 +15,12 @@ Texture::Texture(const char* path, const TextureParams& params) : path(path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, params.magFilter);
 
     stbi_set_flip_vertically_on_load(true);
-    unsigned char* data = stbi_load(path, &width, &height, &channels, 0);
+    unsigned char* data = stbi_load(path, &m_width, &m_height, &m_channels, 0);
 
     if (data) {
-        GLenum format = (channels == 4) ? GL_RGBA : GL_RGB;
+        GLenum format = (m_channels == 4) ? GL_RGBA : GL_RGB;
 
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, m_width, m_height, 0, format, GL_UNSIGNED_BYTE, data);
         if (params.minFilter == GL_LINEAR_MIPMAP_LINEAR || params.minFilter == GL_NEAREST_MIPMAP_NEAREST ||
             params.minFilter == GL_LINEAR_MIPMAP_NEAREST || params.minFilter == GL_NEAREST_MIPMAP_LINEAR) {
             glGenerateMipmap(GL_TEXTURE_2D);
@@ -33,11 +34,38 @@ Texture::Texture(const char* path, const TextureParams& params) : path(path) {
     stbi_image_free(data);
 }
 
-Texture::~Texture() {
-    glDeleteTextures(1, &ID);
+Texture::~Texture() 
+{
+    glDeleteTextures(1, &m_ID);
 }
 
-void Texture::bind(GLenum textureUint) const {
+void Texture::bind(GLenum textureUint) const 
+{
     glActiveTexture(textureUint);
-    glBindTexture(GL_TEXTURE_2D, ID);
+    glBindTexture(GL_TEXTURE_2D, m_ID);
+}
+
+GLuint Texture::ID() const 
+{ 
+    return m_ID; 
+}
+
+int Texture::width() const 
+{ 
+    return m_width; 
+}
+
+int Texture::height() const 
+{ 
+    return m_height; 
+}
+
+int Texture::channels() const 
+{ 
+    return m_channels;
+}
+
+std::string Texture::path() const 
+{ 
+    return m_path; 
 }

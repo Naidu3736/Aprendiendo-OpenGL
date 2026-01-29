@@ -32,6 +32,7 @@ Camera::Camera(const glm::vec3& position,
                const glm::vec3& up,
                float movementSpeed,
                float mouseSensitivity,
+               float zoomSensitivity,
                float fov,
                float minFov,
                float maxFov,
@@ -43,8 +44,9 @@ Camera::Camera(const glm::vec3& position,
     , m_pitch(pitch)
     , m_movementSpeed(movementSpeed)
     , m_mouseSensitivity(mouseSensitivity)
+    , m_zoomSensitivity(zoomSensitivity)
     , m_minFov(std::max(1.0f, minFov))
-    , m_maxFov(std::min(180.0f, maxFov))
+    , m_maxFov(std::min(120.0f, maxFov))
     , m_zNear(zNear)
     , m_zFar(zFar)
 {    
@@ -63,7 +65,7 @@ glm::mat4 Camera::getViewMatrix() const
 
 glm::mat4 Camera::getProjectionMatrix(float aspectRatio) const
 {
-    return glm::perspective(m_fov, aspectRatio, m_zNear, m_zFar);
+    return glm::perspective(glm::radians(m_fov), aspectRatio, m_zNear, m_zFar);
 }
 
 void Camera::move(const glm::vec3& offset)
@@ -71,19 +73,19 @@ void Camera::move(const glm::vec3& offset)
     m_position += m_movementSpeed * offset;
 }
 
-void Camera::moveForward(float distance)
+void Camera::moveForward(float deltaTime)
 {
-    m_position += distance * glm::normalize(glm::vec3(m_forward.x, 0.0f, m_forward.z));
+    m_position += deltaTime * m_movementSpeed * glm::normalize(glm::vec3(m_forward.x, 0.0f, m_forward.z));
 }
 
-void Camera::moveRight(float distance)
+void Camera::moveRight(float deltaTime)
 {
-    m_position += distance * m_right;
+    m_position += deltaTime * m_movementSpeed * m_right;
 }
 
-void Camera::moveUp(float distance)
+void Camera::moveUp(float deltaTime)
 {
-    m_position += distance * m_worldUp;
+    m_position += deltaTime * m_movementSpeed * m_worldUp;
 }
 
 void Camera::rotate(float yawOffset, float pitchOffset)
@@ -100,7 +102,7 @@ void Camera::rotate(float yawOffset, float pitchOffset)
 
 void Camera::zoom(float offset)
 {
-    setFov(m_fov - offset);
+    setFov(m_fov - (offset * m_zoomSensitivity));
 }
 
 // Getters
@@ -144,6 +146,11 @@ float Camera::mouseSensitivity() const
     return m_mouseSensitivity;
 }
 
+float Camera::zoomSensitivity() const
+{
+    return m_zoomSensitivity;
+}
+
 float Camera::fov() const
 {
     return m_fov;
@@ -175,9 +182,14 @@ void Camera::setMovementSpeed(float movementSpeed)
     m_movementSpeed = movementSpeed;
 }
 
-void Camera::setMouseSensitivity(float mouseSensitivity)
+void Camera::setMouseSensitivity(float sensitivity)
 {
-    m_mouseSensitivity = mouseSensitivity;
+    m_mouseSensitivity = sensitivity;
+}
+
+void Camera::setZoomSensitivity(float sensitivity)
+{
+    m_zoomSensitivity = std::clamp(sensitivity, 0.0001f, 2.0f);
 }
 
 void Camera::setFov(float fov)
@@ -188,7 +200,7 @@ void Camera::setFov(float fov)
 void Camera::setFovLimits(float minFov, float maxFov)
 {
     m_minFov = std::max(1.0f, minFov);
-    m_maxFov = std::min(180.0f, maxFov);
+    m_maxFov = std::min(120.0f, maxFov);
 
     if (m_minFov > m_maxFov) {
         std::swap(m_minFov, m_maxFov);

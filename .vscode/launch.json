@@ -1,15 +1,16 @@
 {
+  "version": "2.0.0",
   "configurations": [
     {
-      "name": "OpenGL: g++.exe build and debug active file",
+      "name": "OpenGL: Debug Fast",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}\\build\\${fileBasenameNoExtension}",
+      "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}.exe",
       "args": [],
       "stopAtEntry": false,
-      "cwd": "${workspaceFolder}/build/",
+      "cwd": "${workspaceFolder}\\build\\bin",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,
       "MIMode": "gdb",
       "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
       "setupCommands": [
@@ -17,14 +18,54 @@
           "description": "Enable pretty-printing for gdb",
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
-        },
+        }
+      ]
+    },
+    {
+      "name": "OpenGL: Debug Release",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}_release.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}\\build\\bin",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe",
+      "setupCommands": [
         {
-          "description": "Set Disassembly Flavor to Intel",
-          "text": "-gdb-set disassembly-flavor intel",
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
       ]
+    },
+    {
+      "name": "OpenGL: Run Fast (No Debug)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}\\build\\bin",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe"
+    },
+    {
+      "name": "OpenGL: Run Release (No Debug)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/bin/${fileBasenameNoExtension}_release.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}\\build\\bin",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe"
     }
-  ],
-  "version": "2.0.0"
+  ]
 }

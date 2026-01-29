@@ -34,10 +34,10 @@ const int SCREEN_HEIGHT = 800;
 GLFWwindow* window = nullptr;
 
 /** Path de vertex shader */
-const char* vertexPath = "../assets/shaders/polar/VertexShader.vert";
+const char* vertexPath = "../../assets/shaders/polar/VertexShader.vert";
 
 /** Path de fragment shader */
-const char* fragmentPath = "../assets/shaders/polar/FragmentShader.frag";
+const char* fragmentPath = "../../assets/shaders/polar/FragmentShader.frag";
 
 // ============================================================================
 // VARIABLES GLOBALES DE OPENGL

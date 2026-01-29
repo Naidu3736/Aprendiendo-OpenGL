@@ -11,10 +11,10 @@ struct Config {
     const int SCREEN_WIDTH = 800;
     const int SCREEN_HEINGHT = 800;
     const char* WINDOW_TITLE = "Texture";
-    const char* VERTEX_PATH = "../assets/shaders/Texture/VertexShader.vert";
-    const char* FRAGMENT_PATH = "../assets/shaders/Texture/FragmentShader.frag";
-    const char* TEXTURE1_PATH = "../assets/textures/ellen_joe.png";
-    const char* TEXTURE2_PATH = "../assets/textures/coca.png";
+    const char* VERTEX_PATH = "../../assets/shaders/Texture/VertexShader.vert";
+    const char* FRAGMENT_PATH = "../../assets/shaders/Texture/FragmentShader.frag";
+    const char* TEXTURE1_PATH = "../../assets/textures/ellen_joe.png";
+    const char* TEXTURE2_PATH = "../../assets/textures/coca.png";
 
     // ========== ESTADO RUNTIME (valores que cambian frecuentemente) ==========
     GLFWwindow* window = nullptr;

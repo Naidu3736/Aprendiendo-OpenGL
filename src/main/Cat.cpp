@@ -6,10 +6,10 @@ struct Config {
     const int SCREEN_WIDTH = 800;
     const int SCREEN_HEIGHT = 800;
     const char* WINDOWS_TITLE = "Cat";
-    const char* FRAGMENT_PATH = "../assets/shaders/Cat/FragmentShader.frag";
-    const char* VERTEX_PATH = "../assets/shaders/Cat/VertexShader.vert";
-    const char* TEXTURE_CAT = "../assets/textures/cat.png";
-    const char* TEXTURE_CLOUD = "../assets/textures/cloud.png";
+    const char* FRAGMENT_PATH = "../../assets/shaders/Cat/FragmentShader.frag";
+    const char* VERTEX_PATH = "../../assets/shaders/Cat/VertexShader.vert";
+    const char* TEXTURE_CAT = "../../assets/textures/cat.png";
+    const char* TEXTURE_CLOUD = "../../assets/textures/cloud.png";
 
     GLFWwindow* window = nullptr;
     GLuint VAO, VBO, EBO;

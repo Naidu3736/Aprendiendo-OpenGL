@@ -6,10 +6,10 @@ struct Config {
     const int SCREEN_WIDTH = 800;
     const int SCREEN_HEIGHT = 800;
     const char* WINDOWS_TITLE = "Transform";
-    const char* FRAGMENT_PATH = "../assets/shaders/Transforms/FragmentShader.frag";
-    const char* VERTEX_PATH = "../assets/shaders/Transforms/VertexShader.vert";
-    const char* TEXTURE_1_PATH = "../assets/textures/ellen_joe.png";
-    const char* TEXTURE_2_PATH = "../assets/textures/coca.png";
+    const char* FRAGMENT_PATH = "../../assets/shaders/Transforms/FragmentShader.frag";
+    const char* VERTEX_PATH = "../../assets/shaders/Transforms/VertexShader.vert";
+    const char* TEXTURE_1_PATH = "../../assets/textures/ellen_joe.png";
+    const char* TEXTURE_2_PATH = "../../assets/textures/coca.png";
 
     GLFWwindow* window = nullptr;
 
